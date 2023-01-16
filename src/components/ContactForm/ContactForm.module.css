@@ -1,0 +1,11 @@
+.label {
+    display: inline-block;    
+    font-style: italic;
+}
+
+.input {
+    margin-left: 10px;
+    /* border-radius: 10%; */
+    font-size: large;
+    padding: 5px;
+}
