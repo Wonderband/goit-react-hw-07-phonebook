@@ -15,8 +15,8 @@ export const ContactList = () => {
   }, [dispatch]);
   return (
     <ul>
-      {/* {isLoading && <p>Loading tasks...</p>}
-      {error && <p>{error}</p>} */}
+      {isLoading && <p>Loading tasks...</p>}
+      {error && <p>{error}</p>}
       {console.log(contactsArray)}
       {
         // contactsArray &&
