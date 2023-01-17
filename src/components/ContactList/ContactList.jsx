@@ -15,24 +15,18 @@ export const ContactList = () => {
   }, [dispatch]);
   return (
     <ul>
-      {isLoading && <p>Loading tasks...</p>}
-      {error && <p>{error}</p>}
-      {console.log(contactsArray)}
-      {
-        // contactsArray &&
-        contactsArray
-          .filter(item => item.name.toLowerCase().includes(filter))
-          .map(item => {
-            return (
-              <ListItem
-                key={item.id}
-                id={item.id}
-                name={item.name}
-                number={item.phone}
-              />
-            );
-          })
-      }
+      {contactsArray
+        .filter(item => item.name.toLowerCase().includes(filter))
+        .map(item => {
+          return (
+            <ListItem
+              key={item.id}
+              id={item.id}
+              name={item.name}
+              number={item.phone}
+            />
+          );
+        })}
     </ul>
   );
 };

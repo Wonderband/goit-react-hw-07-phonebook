@@ -1,16 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { fetchContacts, addContact, deleteContact } from './operations';
+import { Notify, Loading } from 'notiflix';
 
 const contactsInitialState = {
-    contactsArray : [
-    // { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-    // { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-    // { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-    // { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contactsArray : [],
     isLoading: false,
     error: null,
 };
+
+const handlePending = state => {
+    state.isLoading = true;
+    Loading.standard('Loading...');
+};
+const handleRejected = (state, action) => { 
+    state.isLoading = false;
+    Loading.remove();
+    state.error = action.payload;
+    Notify.failure(state.error);
+}
       
 const contactsSlice = createSlice({
     name: 'contacts',
@@ -18,22 +25,31 @@ const contactsSlice = createSlice({
     extraReducers: {
         [fetchContacts.fulfilled](state, action) {
             state.isLoading = false;
-            state.error = null;
-            // console.log(action.payload);
+            Loading.remove();
+            state.error = null;           
             state.contactsArray = action.payload;
-        //     console.log(state.contactsArray);
          },
         [addContact.fulfilled](state, action) {
+            state.isLoading = false;
+            Loading.remove();
+            state.error = null;  
             state.contactsArray.push(action.payload);
-            // console.log(state.contactsArray);
+            Notify.info('New contact added');            
         },
         [deleteContact.fulfilled](state, action) { 
-            // console.log(action.payload.id);
-            state.contactsArray = state.contactsArray.filter(contact => contact.id !== action.payload.id);   
-            // console.log(state.contactsArray);
+            state.isLoading = false;
+            Loading.remove();
+            state.error = null;              
+            state.contactsArray = state.contactsArray.filter(contact => contact.id !== action.payload.id); 
+             Notify.info('Contact deleted');            
         },
+        [fetchContacts.pending]: handlePending,
+        [addContact.pending]: handlePending,
+        [deleteContact.pending]: handlePending,
+        [fetchContacts.rejected]: handleRejected,
+        [addContact.rejected]: handleRejected,
+        [deleteContact.rejected]: handleRejected,
     }
 });
 
 export const contactsReducer = contactsSlice.reducer;
-// export const { deleteContact } = contactsSlice.actions;

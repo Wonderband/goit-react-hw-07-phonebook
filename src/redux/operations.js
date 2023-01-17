@@ -16,23 +16,21 @@ export const fetchContacts = createAsyncThunk( 'contacts/fetchAll', async (_, th
 export const addContact = createAsyncThunk(
   'contacts/addContact',
   async (newContact, thunkAPI) => {
-    try {
-      const getContacts = await axios.get('/contacts');
-      // console.log(getContacts.data);
+    try {      
+      const getContacts = await axios.get('/contacts');     
       if (
         getContacts.data.some(
           contact =>
             contact.name.toLowerCase() === newContact.name.toLowerCase().trim()
         )
       ) {
-        alert(`${newContact.name} is already in contacts`);
+        alert(`${newContact.name} is already in contacts`);       
         throw new Error('double contact!');
       } else {
-        const response = await axios.post('/contacts', newContact);
-        console.log(response.data);
+        const response = await axios.post('/contacts', newContact);        
         return response.data;
       }
-    } catch (err) {
+    } catch (err) {      
       return thunkAPI.rejectWithValue(err.message);
     }
   }
@@ -40,8 +38,7 @@ export const addContact = createAsyncThunk(
 
 export const deleteContact = createAsyncThunk('contacts/deleteContact', async (id, thunkAPI) => {
     try {
-      const response = await axios.delete(`/contacts/${id}`);
-      console.log(response);
+      const response = await axios.delete(`/contacts/${id}`);     
       return response.data;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.message);
