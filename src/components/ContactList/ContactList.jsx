@@ -15,6 +15,10 @@ export const ContactList = () => {
   }, [dispatch]);
   return (
     <ul>
+      <p style={{ display: 'none' }}>
+        {isLoading}
+        {error}
+      </p>
       {contactsArray
         .filter(item => item.name.toLowerCase().includes(filter))
         .map(item => {
